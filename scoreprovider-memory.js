@@ -1,13 +1,13 @@
 var scoreCounter = 1;
 
-scoreProvider = function(){};
-scoreProvider.prototype.dummyData = [];
+ScoreProvider = function(){};
+ScoreProvider.prototype.dummyData = [];
 
-scoreProvider.prototype.findAll = function(callback) {
+ScoreProvider.prototype.findAll = function(callback) {
   callback( null, this.dummyData )
 };
 
-scoreProvider.prototype.findById = function(id, callback) {
+ScoreProvider.prototype.findById = function(id, callback) {
   var result = null;
   for(var i =0;i<this.dummyData.length;i++) {
     if( this.dummyData[i]._id == id ) {
@@ -18,7 +18,7 @@ scoreProvider.prototype.findById = function(id, callback) {
   callback(null, result);
 };
 
-scoreProvider.prototype.save = function(scores, callback) {
+ScoreProvider.prototype.save = function(scores, callback) {
   var score = null;
 
   if( typeof(scores.length)=="undefined")
@@ -27,7 +27,7 @@ scoreProvider.prototype.save = function(scores, callback) {
   for( var i =0;i< scores.length;i++ ) {
     score = scores[i];
     score._id = scoreCounter++;
-    score.created_at = new Date();
+    score.created_on = new Date();
 
     this.dummyData[this.dummyData.length]= score;
   }
@@ -35,10 +35,10 @@ scoreProvider.prototype.save = function(scores, callback) {
 };
 
 /* Lets bootstrap with dummy data */
-new scoreProvider().save([
-  {user: 'User1', value: '1000'},
-  {user: 'Mike', value: '10123'},
-  {user: 'Somebody', value: '2000'}
+new ScoreProvider().save([
+  {user: 'User1', value: 1000},
+  {user: 'Mike', value: 10100},
+  {user: 'Somebody', value: 2000}
 ], function(error, scores){});
 
-exports.scoreProvider = scoreProvider;
+exports.ScoreProvider = ScoreProvider;

@@ -9,7 +9,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var scoreProvider = require('./scoreprovider-memory').scoreProvider;
+var ScoreProvider = require('./scoreprovider-memory').ScoreProvider;
 var app = express();
 
 // all environments
@@ -31,19 +31,14 @@ if ('development' == app.get('env')) {
 
 //app.get('/', routes.index);
 
-var sp = new scoreProvider();
+var sp= new ScoreProvider();
 app.get('/', function(req, res){
-  sp.findAll( function(error, allScores){
-
-    //res.render('index.jade');
-    
-    //res.render('index.jade', { locals: {
-    //  title: 'Bug Hunt',
-    //  scores:allScores
-    //  }
-    //});
-   
-    res.send(allScores);
+  sp.findAll( function(error, allScores) {
+    res.render('index.jade', { pageTitle: 'Bug Hunt',  scores:allScores}  );
+  //  res.render('index.jade', { locals: {
+  //    pageTitle: 'Bug Hunt',
+  //    scores:allScores}  });
+    //res.send(allScores);
   });
 });
 app.get('/users', user.list);

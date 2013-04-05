@@ -1,4 +1,23 @@
-
-block content
-  h1= Bug Hunt
-  p Welcome to Bug Hunt
+html
+  head
+    title= pageTitle
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+      h1 #{pageTitle}
+      p Time to squish some bugs.
+      p Welcome to #{pageTitle}! Bugs have invaded planet P. Your mission is to gain air superiority for our grounds forces by sweeping the sky clean of these alien invaders.
+      h2 High Scores
+      div
+        table
+          thead
+            tr
+              th User
+              th Score
+              th Date
+          tbody
+            - each score in scores
+              tr 
+                td= score.user
+                td= score.value
+                td= score.created_on
