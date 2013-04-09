@@ -1,9 +1,0 @@
-extends layout
-
-h1= title
-#scores
-    - each score in scores
-      div.score
-        div.user= score.user
-        div.score= score.value
-        div.scored_on= score.created_at

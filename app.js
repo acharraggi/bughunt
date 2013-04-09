@@ -3,14 +3,18 @@
  * Module dependencies.
  */
 
+console.log('Start app.js for Bug Hunt');
+
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
 
-var ScoreProvider = require('./scoreprovider-memory').ScoreProvider;
+var ScoreProvider = require('./scoreprovider-mongodb').ScoreProvider;
 var app = express();
+
+console.log('after require for /scoreprovider-mongodb');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -31,7 +35,16 @@ if ('development' == app.get('env')) {
 
 //app.get('/', routes.index);
 
-var sp= new ScoreProvider();
+console.log('about to call new ScoreProvider');
+
+var sp= new ScoreProvider('localhost', 27017);
+
+//bootstrap some data
+//sp.save([
+//  {user: 'Mike', value: 30000},
+//  {user: 'Mike', value: 10000}
+//], function(error, scores){});
+
 app.get('/', function(req, res){
   sp.findAll( function(error, allScores) {
     res.render('index.jade', { pageTitle: 'Bug Hunt',  scores:allScores}  );
@@ -41,7 +54,8 @@ app.get('/', function(req, res){
     //res.send(allScores);
   });
 });
-app.get('/users', user.list);
+
+//app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

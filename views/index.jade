@@ -6,8 +6,12 @@ html
     block content
       h1 #{pageTitle}
       p Time to squish some bugs.
-      p Welcome to #{pageTitle}! Bugs have invaded planet P. Your mission is to gain air superiority for our grounds forces by sweeping the sky clean of these alien invaders.
-      h2 High Scores
+      p 
+        | Bugs have invaded planet P.
+        | Your mission is to gain air superiority for our ground forces by
+        | sweeping the sky clean of these alien invaders.
+      a(href="/BugHunt.html") Click here to play the game!
+      h3 High Scores
       div
         table
           thead
@@ -20,4 +24,17 @@ html
               tr 
                 td= score.user
                 td= score.value
-                td= score.created_on
+                td #{score.created_on.toDateString()}
+      div
+        h3 Colophon
+        p This website was designed and built by Mike Silversides. 
+        p  
+          | The site is hosted on Amazon Web Services.
+          | Web pages served by Node.js using Jade and Style.
+          | MongoDB was used to persist the high score data.
+          | Bughunt source is saved at GitHub.
+        p The actual game was developed using Unity and deployed for their web player.
+        h3 Credits
+        p Bug Hunt was based on the Ace Invaders project from the Unity 3 Blueprints book. It was modified to capture high scores.
+        a(href="/AceInvaders.html") Click here to try that game.
+        p I used the tutorials at xxx and yyy to get started with AWS and node.
