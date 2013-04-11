@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Bug Hunt</title>
+		<title>Unity Web Player | Bug Hunt</title>
 		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
 		<script type="text/javascript">
 		<!--
@@ -15,7 +15,7 @@
 		<script type="text/javascript">
 		<!--
 			var config = {
-				width: 512, 
+				width: 550, 
 				height: 768,
 				params: { enableDebugging:"0" }
 				
@@ -85,7 +85,7 @@
 		}
 		div.content {
 			margin: auto;
-			width: 512px;
+			width: 550px;
 		}
 		div.broken,
 		div.missing {
@@ -110,14 +110,13 @@
 		div#unityPlayer {
 			cursor: default;
 			height: 768px;
-			width: 512px;
+			width: 550px;
 		}
 		-->
 		</style>
 	</head>
 	<body>
-		<p class="header">Bug Hunt</p>
-<p>Use arrows keys to move, space bar to shoot. Go squish some bugs!</p>
+		<p class="header"><span>Unity Web Player | </span>Bug Hunt</p>
 		<div class="content">
 			<div id="unityPlayer">
 				<div class="missing">
@@ -127,7 +126,6 @@
 				</div>
 			</div>
 		</div>
-<p>A demo game program by Mike Silversides. It's based on the Space Shooter game in the Unity 3 Blueprints book, but modified to be deployed from a node.js server and to post games scores back to that server.</p>
 		<p class="footer">&laquo; created with <a href="http://unity3d.com/unity/" title="Go to unity3d.com">Unity</a> &raquo;</p>
 	</body>
 </html>
