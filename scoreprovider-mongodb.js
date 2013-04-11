@@ -29,6 +29,18 @@ ScoreProvider.prototype.findAll = function(callback) {
     });
 };
 
+ScoreProvider.prototype.findTop10 = function(callback) {
+    this.getCollection(function(error, score_collection) {
+      if( error ) callback(error)
+      else {
+        score_collection.find().sort( { value: -1 } ).limit(10).toArray(function(error, results) {
+        //score_collection.find().sort( { value: -1 } ).toArray(function(error, results) {
+          if( error ) callback(error)
+          else callback(null, results)
+        });
+      }
+    });
+};
 
 ScoreProvider.prototype.findById = function(id, callback) {
     this.getCollection(function(error, score_collection) {

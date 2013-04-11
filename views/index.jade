@@ -11,7 +11,7 @@ html
         | Your mission is to gain air superiority for our ground forces by
         | sweeping the sky clean of these alien invaders.
       a(href="/BugHunt.html") Click here to play the game!
-      h3 High Scores
+      h3 Top Ten High Scores
       div
         table
           thead
@@ -29,12 +29,33 @@ html
         h3 Colophon
         p This website was designed and built by Mike Silversides. 
         p  
-          | The site is hosted on Amazon Web Services.
-          | Web pages served by Node.js using Jade and Style.
+          | The site is hosted on Amazon 
+          a(href="http://aws.amazon.com/") Amazon Web Services
+          | . Web pages served by Node.js using Express.
           | MongoDB was used to persist the high score data.
-          | Bughunt source is saved at GitHub.
-        p The actual game was developed using Unity and deployed for their web player.
+          | Bughunt server source is saved at 
+          a(href="https://github.com/acharraggi/bughunt") GitHub
+          | . Audio was prepared in Audacity prior to importing to Unity.
+        p 
+          | The actual game was developed using 
+          a(href="http://unity3d.com/") Unity
+          |  and deployed for their web player.
         h3 Credits
-        p Bug Hunt was based on the Ace Invaders project from the Unity 3 Blueprints book. It was modified to capture high scores.
-        a(href="/AceInvaders.html") Click here to try that game.
-        p I used the tutorials at xxx and yyy to get started with AWS and node.
+        p 
+          | Bug Hunt was based on the Ace Invaders project from the 
+          | Unity 3 Blueprints book. It was modified to capture high scores;
+          | improve game play with an intro and game over phase and other
+          | fixes; plus add
+          | a sound track and sound effects. 
+          a(href="/AceInvaders.html") Click here to try that game.
+        p 
+          | I used the tutorial on the blog of 
+          a(href="http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide") Kostas Mavropalias
+          |  to get started with Amazon Web Services and node.
+          | This page on the the 
+          a(href="http://howtonode.org/express-mongodb") How To Node
+          |  site got me started with Express and MongoDB.
+        p 
+          | The sound track is The Razor's Edge by AC/DC.
+          | Other sound effects from&nbsp;
+          a(href="http://freesound.org") Freesound.org.
