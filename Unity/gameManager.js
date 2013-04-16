@@ -20,43 +20,165 @@ var playerDeathObj : GameObject;
 var playerLivesTxt : Texture2D;
 var playerScore = 0;
 var style : GUIStyle;
+ 
+private var url : String     = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:8080/top10";
+private var postUrl : String = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:8080/saveScore";
+
+private var gameEnd = false;
+private var gameIntro = true;
+private var playerName : String = "";
+private var top10 : String = "";
+private var scoreSaved = false;
+
+var audioIntro : GameObject;
+var audioMain : GameObject;
+var currentAudio : GameObject;
+var audioEnemyBoom : GameObject;
+var audioPlayerBoom: GameObject;
 
 function Start()
 {
-
+	// only do once
 	targetSpwnDir1 = enemyTarg1.position - enemySpwn1.position;
 	targetSpwnDir2 = enemyTarg2.position - enemySpwn2.position;
+	currentAudio.audio.Play();
+	gameIntro = true;
+	init();
+}
+
+function init() {
+	playerScore = 0;
+	playerLives = 4;
+	gameEnd = false;
+	scoreSaved = false;
+	respawn = false;
+	top10="";
+	player1 = Instantiate(playerObj,playerSpwn.transform.position,playerObj.transform.rotation) as GameObject;
+}
+
+function round1 () {
+	if(currentAudio != audioMain) {
+    	currentAudio.audio.Stop();
+    	currentAudio = audioMain;
+   		currentAudio.audio.Play();
+   	}
+   	yield WaitForSeconds(2);
 	SendWave1();
 	yield WaitForSeconds(5);
-	SendWave2();
-	yield WaitForSeconds(5);
-	SendWave3();
-	yield WaitForSeconds(5);
-	SendWave4();
-	SendWave5();
+	if(!gameEnd) {
+	  SendWave2();
+	  yield WaitForSeconds(7);
+	  if(!gameEnd) {
+	    SendWave3();
+	    yield WaitForSeconds(7);
+	    if(!gameEnd) {
+	      SendWave4();
+	      yield WaitForSeconds(3);
+	      if(!gameEnd) {
+	        SendWave5();
+	        yield WaitForSeconds(15);
+	        gameEnd=true;
+	      }
+	    }
+	  }
+	}
 }
 
 function Update () {
-	if (respawn == true && playerLives != 0)
+    if(playerLives <=0) {
+    	gameEnd = true;	
+    }
+    else if (respawn == true)
 	{
 		respawnPlayer();
 	}
+	if(gameIntro) {
+	   if(currentAudio != audioIntro) {
+    	   	currentAudio.audio.Stop();
+    		currentAudio = audioIntro;
+    		currentAudio.audio.Play();
+    	}
+    }
+	if(gameEnd) {
+	   	if(currentAudio != audioIntro) {
+       		currentAudio.audio.Stop();
+    		currentAudio = audioIntro;
+   			currentAudio.audio.Play();
+   		}
+    }
+
 }
 
 function OnGUI()
 {
-	GUI.Label (Rect (20, 620, 74, 85),playerLivesTxt, style);
-	GUI.Label (Rect (50, 620, 50, 50),playerLives.ToString(),
+	GUI.Label (Rect (10, 20, 74, 85),playerLivesTxt, style);
+	GUI.Label (Rect (40, 20, 50, 50),playerLives.ToString(),
 		style);
-	GUI.Label (Rect (250,670, 200, 50),playerScore.ToString(),
+	GUI.Label (Rect (300,20, 100, 50),playerScore.ToString(),
 		style);
+	
+	if (gameIntro) {
+		GUI.Label (Rect (10, 150, 170, 50),"Are you ready?", style);
+		GUI.Label (Rect (10, 190, 400, 50),"Use arrow keys to move, space bar to shoot.");
+		if (GUI.Button(Rect(10,240,150,30),"Click to start game")) {
+		    Debug.Log("Clicked the start button");
+            gameIntro = false;
+            StartCoroutine(round1()); 
+		}
+	}
+	else if (gameEnd) {
+		GUI.Label (Rect (10, 150, 125, 50),"Game Over!", style);
+		GUI.Label (Rect (10, 190, 400, 50),"Enter name to save your score and see top ten scores:" );
+		playerName = GUI.TextField (Rect (10, 215, 100, 20), playerName, 25);
+		if(!scoreSaved) {
+		 if (GUI.Button(Rect(10,240,150,30),"Click to save score")) {
+		    Debug.Log("Clicked the button with text: "+playerName);
+		    if(playerName != "") {
+            	scoreSaved = true;
+            	StartCoroutine(SaveScore());
+            }
+            else top10 = "Player name cannot be blank"; 
+		 }
+		}
+		GUI.Label (Rect (10, 300, 125, 50),"High Scores", style);
+		GUI.TextArea (Rect (10, 325, 200, 170), top10, 300);
+		
+		GUI.Label (Rect(10, 520, 300, 50),"Refresh your browser to play again.");
+		/* this section needs work, player's ship gets all messed up when playing again that way
+		   duplicate ship, and shields aren't attached to ships.
+		if (GUI.Button(Rect(250,240,150,30),"Click to play again")) {
+		    Debug.Log("Clicked the play again button");
+            init();
+            StartCoroutine(round1()); 
+		}
+		*/
+	}
 }
 
-//function SendEnemy()
-//{
-//	var instantiatedProjectile : GameObject = Instantiate(enemyPrefab, enemySpwn1.transform.position, this.transform.rotation);
-//	instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetDir*enemySpeed);
-//}
+function SaveScore()
+{
+	var postData : String = playerName+","+playerScore.ToString();
+	var byteArray : byte[] = System.Text.Encoding.UTF8.GetBytes(postData);
+	var www2 : WWW = new WWW (postUrl,byteArray);
+	// Wait for upload to complete
+	yield www2;
+	
+	if (!String.IsNullOrEmpty(www2.error)) {
+		top10 = "Error accessing Bug Hunt game server to save score.\n"+www2.error;
+	} 
+	else {
+		// Start download of the top 10 scores
+    	var www : WWW = new WWW (url);
+    	// Wait for download to complete
+		yield www;
+    	if (!String.IsNullOrEmpty(www.error)) {
+			top10 = "Error accessing high score list on Bug Hunt game server.\n"+www.error;
+		} 
+		else {
+			top10 = www.text;
+		}
+	}
+}
 
 function SendWave1()
 {

@@ -5,7 +5,7 @@ function Start()
 
 function run()
 {
-	yield WaitForSeconds(5);
+	yield WaitForSeconds(15);
 	Destroy(this.gameObject);	
 }
 

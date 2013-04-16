@@ -33,7 +33,7 @@ function Update()
 	
 	guiTime = Time.time - startTime;
 	seconds = guiTime % 60;
-	print (seconds);
+//	print (seconds);
 	if (seconds == 3){
 		playerInvincible = false;
 		shieldOn = false;
@@ -59,7 +59,7 @@ function Update()
 	 
 	 if (Input.GetKey (KeyCode.LeftArrow))
 	 {
-	 	if (transform.position.x > -2)
+	 	if (transform.position.x > -2.75)
 	 	{
 			currentState = shipState.MOVINGLEFT;
 			ActionShip(currentState);	
@@ -68,7 +68,7 @@ function Update()
 	 
 	if (Input.GetKey (KeyCode.RightArrow))
 	{
-		if (transform.position.x < 2)
+		if (transform.position.x < 2.75)
 		{
 	 		currentState = shipState.MOVINGRIGHT;
 	 		ActionShip(currentState);
@@ -91,6 +91,7 @@ function ActionShip( state : shipState )
 			cloneLaser1.rigidbody.velocity =transform.TransformDirection(Vector3.up*initialLaserSpeed);
 			var cloneLaser2 : GameObject = Instantiate(laser,lsrSpawn2.transform.position,lsrSpawn2.transform.rotation) as GameObject;
 			cloneLaser2.rigidbody.velocity = transform.TransformDirection(Vector3.up*initialLaserSpeed);
+			audio.Play();  // laser sound
      	break;
      	case shipState.MOVINGUP:   
         	transform.Translate(0,speed*Time.deltaTime,0,Space.World);    	
@@ -107,17 +108,21 @@ function ActionShip( state : shipState )
 	}
 }
 
-function OnTriggerEnter(enemy : Collider) 
-{
-	if (playerInvincible == false)
+function OnTriggerEnter(enemy : Collider) {
+if (playerInvincible == false)
 {
 	if (enemy.tag == "enemyLaser" || enemy.tag == "enemy"){
-   	Destroy(this.gameObject);  
-   	var script1 = gameMgObj.transform.gameObject.GetComponent("gameManager");	
-	var pPosition = transform.position;
-	script1.destroyPlayer(pPosition);
-	script1.respawn = true;	
-	script1.playerLives -=1;
+   		Destroy(this.gameObject);  
+   		var script1 = gameMgObj.transform.gameObject.GetComponent("gameManager");
+   		script1.audioPlayerBoom.audio.Play();  // player explosion sound
+
+		var pPosition = transform.position;
+		script1.destroyPlayer(pPosition);
+		script1.respawn = true;	
+		script1.playerLives -=1;
+		if (script1.playerLives < 0) {
+			script1.playerLives = 0;
+		}
 	}
 }
 }
