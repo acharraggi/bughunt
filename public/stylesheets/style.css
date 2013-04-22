@@ -26,3 +26,7 @@ td+td {
   border-left: 1px solid #ccc;
   text-align: right;
 }
+img {
+  float: left;
+  margin-right: 10px;
+}
