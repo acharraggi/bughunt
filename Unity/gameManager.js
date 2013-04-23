@@ -21,13 +21,16 @@ var playerLivesTxt : Texture2D;
 var playerScore = 0;
 var style : GUIStyle;
  
-private var url : String     = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:8080/top10";
-private var postUrl : String = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:8080/saveScore";
+private var url : String     = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:3000/top10";
+private var postUrl : String = "http://ec2-54-244-126-75.us-west-2.compute.amazonaws.com:3000/saveScore";
 
 private var gameEnd = false;
 private var gameIntro = true;
 private var playerName : String = "";
 private var top10 : String = "";
+private var top10names : String;
+private var top10count = 0;
+private var top10scores : String;
 private var scoreSaved = false;
 
 var audioIntro : GameObject;
@@ -39,6 +42,7 @@ var audioPlayerBoom: GameObject;
 function Start()
 {
 	// only do once
+	
 	targetSpwnDir1 = enemyTarg1.position - enemySpwn1.position;
 	targetSpwnDir2 = enemyTarg2.position - enemySpwn2.position;
 	currentAudio.audio.Play();
@@ -176,6 +180,22 @@ function SaveScore()
 		} 
 		else {
 			top10 = www.text;
+		/**	Debug.Log(top10);
+			var top10temp = top10.Split("\n"[0]);
+			top10count = top10temp.Length;
+			Debug.Log("Top10count=" + top10count);
+			Debug.Log("First Line: " + top10temp[0]); 
+			for(var i=0; i< top10count && i < 10; i++) {
+				var top10line = top10temp[i].Split(","[0]);
+				Debug.Log("# of line elements: " +top10line.Length);
+				if (top10line.Length > 1) {
+				    Debug.Log("First element: " + top10line[0]);
+					top10names[i] = top10line[0];
+					Debug.Log(top10names[i]);
+					top10scores[i] = top10line[1];
+				}
+			}
+		***/
 		}
 	}
 }
@@ -241,5 +261,4 @@ function respawnPlayer()
 	script1.playerInvincible = true;
 	script1.shieldOn = true;
 	respawn = false;
-	
 }
