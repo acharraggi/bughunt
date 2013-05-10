@@ -21,7 +21,9 @@ function Start()
 	shield = gameObject.Find("shield");
 	shield.renderer.enabled = false;
 	startTime = Time.time;
+	currentState = shipState.IDLE;
 }
+
 function Update()
 {
 	if (shieldOn == true){
@@ -113,15 +115,19 @@ if (playerInvincible == false)
 {
 	if (enemy.tag == "enemyLaser" || enemy.tag == "enemy"){
    		Destroy(this.gameObject);  
+   		Destroy(enemy.gameObject);
    		var script1 = gameMgObj.transform.gameObject.GetComponent("gameManager");
-   		script1.audioPlayerBoom.audio.Play();  // player explosion sound
+   	
+   		if (script1.respawn == false) {  // fix issue with one hit causing two player lives lost
+	   		script1.audioPlayerBoom.audio.Play();  // player explosion sound
 
-		var pPosition = transform.position;
-		script1.destroyPlayer(pPosition);
-		script1.respawn = true;	
-		script1.playerLives -=1;
-		if (script1.playerLives < 0) {
-			script1.playerLives = 0;
+			var pPosition = transform.position;
+			script1.destroyPlayer(pPosition);
+			script1.respawn = true;	
+			script1.playerLives -=1;
+			if (script1.playerLives < 0) {
+				script1.playerLives = 0;
+			}
 		}
 	}
 }

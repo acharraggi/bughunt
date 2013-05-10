@@ -5,13 +5,13 @@ function Start()
 
 function run()
 {
-	yield WaitForSeconds(15);
+	yield WaitForSeconds(10);
 	Destroy(this.gameObject);	
 }
 
 function OnTriggerEnter(col : Collider)
 {
-	if (col.tag == "enemy")
+	if (col.tag == "player")
 	{
 		Destroy(this.gameObject);
 	}
