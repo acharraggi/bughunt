@@ -8,6 +8,7 @@ var enemyPrefab2 : GameObject;
 var enemyPrefab3 : GameObject;
 private var enemySpeed = 0.1;
 private var enemySpeed2 = 0.2;
+private var enemySpawnDelay = 1.1;
 private var targetSpwnDir1 : Vector3;
 private var targetSpwnDir2 : Vector3;
 private var laserSpeed = 0.8;
@@ -53,7 +54,7 @@ function Start()
 	// only do once
 	targetSpwnDir1 = enemyTarg1.position - enemySpwn1.position;
 	targetSpwnDir2 = enemyTarg2.position - enemySpwn2.position;
-	currentAudio.audio.Play();
+	currentAudio.audio.Play();  //play intro music
 	gameIntro = true;
 	roundCount = 0;
 	init();
@@ -62,6 +63,7 @@ function Start()
 function init() {
 	enemySpeed = 0.0;
 	enemySpeed2 = 0.1;
+	enemySpawnDelay = 1.1;
 	laserSpeed = 4.0;
 	playerScore = 0;
 	playerLives = 4;
@@ -84,42 +86,6 @@ function init() {
 	}
 }
 
-function round1 () {
-	roundRunning = true;
-	if(currentAudio != audioMain) {
-    	currentAudio.audio.Stop();
-    	currentAudio = audioMain;
-   		currentAudio.audio.Play();
-   	}
-   	yield WaitForSeconds(2);
-	SendWave1();
-	yield WaitForSeconds(4);
-	if(!gameEnd) {
-	  SendWave2();
-	  yield WaitForSeconds(4);
-	  if(!gameEnd) {
-	    SendWave3();
-	    yield WaitForSeconds(4);
-	    if(!gameEnd) {
-	      SendWave4();
-	      yield WaitForSeconds(4);
-	      if(!gameEnd) {
-	        SendWave5();
-	        yield WaitForSeconds(4);
-	        if(!gameEnd) {
-	          SendWave6();
-	          yield WaitForSeconds(5);
-	        }
-	      }
-	    }
-	  }
-	}
-	yield WaitForSeconds(5);  // allow enemy lasers to clear
-	currentWave=0;
-	roundRunning = false;
-
-}
-
 function round () {
 	roundRunning = true;
 	if(currentAudio != audioMain) {
@@ -130,6 +96,7 @@ function round () {
    	enemySpeed += 0.1;
 	enemySpeed2 += 0.1;
 	laserSpeed += 1.0;
+	enemySpawnDelay = enemySpawnDelay * 0.9;
 
    	yield WaitForSeconds(1);
 	SendWave1();
@@ -169,7 +136,7 @@ function Update () {
 	{
 		respawnPlayer();
 	}
-	if(gameIntro || !roundRunning) {
+	if(gameIntro /* || !roundRunning */ ) {
 	   if(currentAudio != audioIntro) {
     	   	currentAudio.audio.Stop();
     		currentAudio = audioIntro;
@@ -204,7 +171,6 @@ function OnGUI()
 	}
 	else if (gameEnd) {
 		GUI.Label (Rect (10, 150, 125, 50),"Game Over!", style);
-	//	GUI.Label (Rect(10, 180, 300, 50),"Refresh your browser to play again.");
 		GUI.Label (Rect (10, 200, 400, 50),"Enter your name to save your score and see top ten scores:" );
 		if(top10 != "") {
 			GUI.TextArea (Rect (160, 50, 270, 130), top10, 300);
@@ -237,9 +203,6 @@ function OnGUI()
 		}
 	}
 	else if (!roundRunning && roundCount > 1) {
-		//if(roundRunning != true && playerLives > 0) {
-		// 	StartCoroutine(round2());
-		//}
 		if (!timerStarted) {
 			timerStarted = true;
 			startTime = Time.time;
@@ -305,10 +268,12 @@ function SendWave1()
 	currentWave = 1;
 	for (var i = 0; i <= 3; i++)
 	{
+	  if(!gameEnd) {
 		var instantiatedProjectile : GameObject = Instantiate(enemyPrefab1, enemySpwn1.transform.position, 
 			this.transform.rotation);
 		instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetSpwnDir1*enemySpeed2);
-		yield WaitForSeconds(1.0);
+		yield WaitForSeconds(enemySpawnDelay);
+	  }
 	}
 }
 
@@ -317,10 +282,12 @@ function SendWave2()
 	currentWave = 2;
 	for (var i = 0; i <= 5; i++)
 	{
+	  if(!gameEnd) {
 		var instantiatedProjectile : GameObject = Instantiate(enemyPrefab2, enemySpwn2.transform.position,
 				this.transform.rotation);
 		instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetSpwnDir2*enemySpeed);
-		yield WaitForSeconds(1.0);
+		yield WaitForSeconds(enemySpawnDelay);
+	  }
 	}
 }
 
@@ -330,7 +297,7 @@ function SendWave3()
 	var instantiatedProjectile : GameObject = Instantiate(enemyPrefab3, enemySpwn1.transform.position,
 	 						this.transform.rotation);
 	instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetSpwnDir1*enemySpeed2);
-	yield WaitForSeconds(1.0);
+	yield WaitForSeconds(enemySpawnDelay);
 }
 
 
@@ -339,9 +306,11 @@ function SendWave4()
 	currentWave = 4;
 	for (var i = 0; i <= 7; i++)
 	{
+	  if(!gameEnd) {
 		var instantiatedProjectile : GameObject = Instantiate (enemyPrefab2, enemySpwn2.transform.position, 						this.transform.rotation);
 		instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetSpwnDir2*enemySpeed);
-		yield WaitForSeconds(1.0);
+		yield WaitForSeconds(enemySpawnDelay);
+	  }
 	}
 }
 
@@ -350,18 +319,18 @@ function SendWave5()
 	currentWave = 5;
 	var instantiatedProjectile : GameObject = Instantiate (enemyPrefab3, enemySpwn1.transform.position, 						this.transform.rotation);
 	instantiatedProjectile.rigidbody.velocity = transform.TransformDirection(targetSpwnDir1*enemySpeed2);
-	yield WaitForSeconds(1.0);
+	yield WaitForSeconds(enemySpawnDelay);
 }
 
 function SendWave6() {
 	currentWave = 6;
 	for (var i = 0; i <= 5; i++) {
-	 var instantiatedProjectile : GameObject = Instantiate (enemyPrefab1, enemySpwn3.transform.position, 
+	 if(!gameEnd || player1 != null) { // don't create more if player destroyed
+	 	 var instantiatedProjectile : GameObject = Instantiate (enemyPrefab1, enemySpwn3.transform.position, 
 	 		this.transform.rotation);
-	 if(player1 != null) {
 		instantiatedProjectile.rigidbody.velocity = 
 			 transform.TransformDirection( (player1.transform.position-enemySpwn3.position)*enemySpeed*3);
-	 	yield WaitForSeconds(1.0);
+	 	yield WaitForSeconds(enemySpawnDelay);
 	 }
 	}
 	currentWave = 6;

@@ -16,3 +16,6 @@ change history
      - fix: hit on player won't sometimes reduces lives by 2
      - add wave6 which starts aimed at player ship
      - repeat waves in rounds that get faster
+0.31 - 2013-05-10 fix wave6 issue where enemy created at game end and it didn't move
+     - added enenmySpawnDelay variable, continue main music between rounds.
+
