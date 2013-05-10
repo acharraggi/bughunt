@@ -15,7 +15,7 @@ var ScoreProvider = require('./scoreprovider-mongodb').ScoreProvider;
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());

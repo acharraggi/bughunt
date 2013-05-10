@@ -19,13 +19,13 @@ html
             tr
               th User
               th Score
-              th Date
+              //-th Date
           tbody
             - each score in scores
               tr 
                 td= score.user
                 td= score.value
-                td #{score.created_on.toDateString()}
+                //-td #{score.created_on.toDateString()}
       div
         h3 Colophon
         p This website was designed and built by Mike Silversides. 

@@ -50,6 +50,6 @@ function onRequest(request,response) {
     response.end();
   }
 }
-http.createServer(onRequest).listen(8080);
+http.createServer(onRequest).listen(3000);
  
-console.log("server8080 Bug Hunt Game Server started.");
+console.log("Bug Hunt Game Server started.");
