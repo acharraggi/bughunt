@@ -1,0 +1,12 @@
+html
+  head
+    title= pageTitle
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+      h1 #{pageTitle}
+      a(href="/") Home
+      &nbsp;
+      a(href="/logout") Logout
+      img(src='/bug-icon.jpg', width='72', height='72', alt='Bughunt')
+      p Welcome #{user.username}.
