@@ -18,4 +18,5 @@ change history
      - repeat waves in rounds that get faster
 0.31 - 2013-05-10 fix wave6 issue where enemy created at game end and it didn't move
      - added enenmySpawnDelay variable, continue main music between rounds.
+0.40 - 2013-06-04 Add Login/Account pages with hard-coded users, added top10 page.
 

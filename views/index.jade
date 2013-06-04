@@ -5,27 +5,22 @@ html
   body
     block content
       h1 #{pageTitle}
+      - if (!user)
+        a(href="/login") Login
+      - else
+        a(href="/account") Account
+        &nbsp;
+        a(href="/logout") Logout
       img(src='/bug-icon.jpg', width='72', height='72', alt='Bughunt')
       p Time to squish some bugs.
       p 
         | Bugs have invaded planet P.
         | Your mission is to gain air superiority for our ground forces by
         | sweeping the sky clean of these alien invaders.
-      a(href="/BugHunt.html") Click here to play the game!
-      h3 Top Ten High Scores
-      div
-        table
-          thead
-            tr
-              th User
-              th Score
-              //-th Date
-          tbody
-            - each score in scores
-              tr 
-                td= score.user
-                td= score.value
-                //-td #{score.created_on.toDateString()}
+      p
+        a(href="/BugHunt.html") Click here to play the game!
+      p
+        a(href="/top10") Click here to see the top 10 scores.
       div
         h3 Colophon
         p This website was designed and built by Mike Silversides. 
